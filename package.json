@@ -1,7 +1,7 @@
 {
   "name": "nema-function-update-action",
   "description": "This action allows you to push updated function code to Nema",
-  "version": "v0.0.1",
+  "version": "v0.0.2",
   "author": "Nema Systems, Inc.",
   "private": true,
   "homepage": "https://github.com/nema-systems/nema-function-update-action",
@@ -67,7 +67,8 @@
     ]
   },
   "dependencies": {
-    "@actions/core": "^1.11.1"
+    "@actions/core": "^1.11.1",
+    "form-data": "^4.0.1"
   },
   "devDependencies": {
     "@github/local-action": "^2.1.3",

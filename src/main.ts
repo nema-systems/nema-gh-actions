@@ -1,5 +1,7 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
+import FormData from 'form-data'
+
 // import { wait } from './wait'
 
 /**
@@ -34,20 +36,25 @@ export async function run(): Promise<void> {
 
     const idToken = await core.getIDToken()
 
+    core.info(`${filePath}, ${projectUrl}, ${globalId}, ${idToken}`)
+
+    const url = `https://api.nemasystems.com/api/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`
+
+    const formData = new FormData()
+
+    const fileContent = fs.createReadStream(filePath)
+
+    formData.append('file', fileContent, { filename: filePath })
+
     // submit file to nemasystems
-    const response = await fetch(
-      `https://api.nemasystems.com/api/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${idToken}`
-        }
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${idToken}`
       }
-    )
+    })
 
-    console.log({ response })
-
-    console.log({ filePath, projectUrl, globalId, idToken })
+    core.info(`Response: ${response.status}`)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
