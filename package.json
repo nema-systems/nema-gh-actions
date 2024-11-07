@@ -1,16 +1,16 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "name": "nema-function-update-action",
+  "description": "This action allows you to push updated function code to Nema",
+  "version": "0.0.1",
+  "author": "Nema Systems, Inc.",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/nema-systems/nema-function-update-action",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/nema-systems/nema-function-update-action.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/nema-systems/nema-function-update-action/issues"
   },
   "keywords": [
     "actions",

@@ -1,23 +1,28 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'nema-function-update-action'
+description:
+  'This action updates function code in Nema, such as Python, Julia, R, ...
+  code.'
+author: 'Nema Systems, Inc.'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
+# This is what appears on GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'send'
+  color: 'blue'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  file:
+    description: 'The file that contains the function code.'
     required: true
-    default: '1000'
 
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
+  project:
+    description:
+      'Link to project in Nema. E.g., `myorganization/default/myproject`.'
+    required: true
+
+  id:
+    description: 'ID of function you are updating.'
+    required: true
 
 runs:
   using: node20

@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import * as fs from 'fs'
 import { wait } from './wait'
 
 /**
@@ -7,18 +8,34 @@ import { wait } from './wait'
  */
 export async function run(): Promise<void> {
   try {
-    const ms: string = core.getInput('milliseconds')
+    const filePath = core.getInput('file', { required: true })
+    const projectUrl = core.getInput('project', { required: true })
+    const globalId = core.getInput('id', { required: true })
 
-    // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-    core.debug(`Waiting ${ms} milliseconds ...`)
+    const [tenant, workspace, project] = projectUrl.split('/')
 
-    // Log the current timestamp, wait, then log the new timestamp
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+      core.setFailed(`File not found: ${filePath}`)
+      return
+    }
 
-    // Set outputs for other workflow steps to use
-    core.setOutput('time', new Date().toTimeString())
+    const idToken = await core.getIDToken()
+
+    // submit file to nemasystems
+    const response = await fetch(
+      `https://api.nemasystems.com/api/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${idToken}`
+        }
+      }
+    )
+
+    console.log({ response })
+
+    console.log({ filePath, projectUrl, globalId, idToken })
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)
