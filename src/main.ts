@@ -55,7 +55,7 @@ export async function run(): Promise<void> {
     }
 
     // submit file to nemasystems
-    const response = await axios.post(url, formData, { headers })
+    const response = await axios.put(url, formData, { headers })
 
     if (response.status < 200 || response.status >= 300) {
       throw new Error(

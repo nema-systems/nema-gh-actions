@@ -29210,7 +29210,7 @@ async function run() {
             Authorization: `Bearer ${idToken}`
         };
         // submit file to nemasystems
-        const response = await axios_1.default.post(url, formData, { headers });
+        const response = await axios_1.default.put(url, formData, { headers });
         if (response.status < 200 || response.status >= 300) {
             throw new Error(`Server responded with status code ${response.status}: ${response.statusText}`);
         }
