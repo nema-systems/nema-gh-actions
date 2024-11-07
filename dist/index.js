@@ -29201,7 +29201,7 @@ async function run() {
         }
         const idToken = await core.getIDToken();
         core.info(`Uploading ${filePath} to Function #${globalId} for ${projectUrl}`);
-        const url = `https://api.nemasystems.com/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`;
+        const url = `https://api.nemasystems.io/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`;
         const formData = new form_data_1.default();
         const fileContent = fs.createReadStream(filePath);
         formData.append('file', fileContent, { filename: filePath });

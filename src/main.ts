@@ -41,7 +41,7 @@ export async function run(): Promise<void> {
       `Uploading ${filePath} to Function #${globalId} for ${projectUrl}`
     )
 
-    const url = `https://api.nemasystems.com/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`
+    const url = `https://api.nemasystems.io/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`
 
     const formData = new FormData()
 
