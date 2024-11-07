@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import FormData from 'form-data'
+import axios from 'axios'
 
 // import { wait } from './wait'
 
@@ -36,9 +37,11 @@ export async function run(): Promise<void> {
 
     const idToken = await core.getIDToken()
 
-    core.info(`${filePath}, ${projectUrl}, ${globalId}, ${idToken}`)
+    core.info(
+      `Uploading ${filePath} to Function #${globalId} for ${projectUrl}`
+    )
 
-    const url = `https://api.nemasystems.com/api/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`
+    const url = `https://api.nemasystems.com/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`
 
     const formData = new FormData()
 
@@ -46,13 +49,19 @@ export async function run(): Promise<void> {
 
     formData.append('file', fileContent, { filename: filePath })
 
+    const headers = {
+      ...formData.getHeaders(),
+      Authorization: `Bearer ${idToken}`
+    }
+
     // submit file to nemasystems
-    const response = await fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${idToken}`
-      }
-    })
+    const response = await axios.post(url, formData, { headers })
+
+    if (response.status < 200 || response.status >= 300) {
+      throw new Error(
+        `Server responded with status code ${response.status}: ${response.statusText}`
+      )
+    }
 
     core.info(`Response: ${response.status}`)
   } catch (error) {
