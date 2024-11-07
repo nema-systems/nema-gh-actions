@@ -37,8 +37,12 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
+        case 'file':
+          return 'app.py'
+        case 'project':
+          return 'nema/default/tutorial'
+        case 'id':
+          return '2'
         default:
           return ''
       }
@@ -48,19 +52,9 @@ describe('action', () => {
     expect(runMock).toHaveReturned()
 
     // Verify that all of the core library functions were called correctly
-    expect(debugMock).toHaveBeenNthCalledWith(1, 'Waiting 500 milliseconds ...')
     expect(debugMock).toHaveBeenNthCalledWith(
-      2,
-      expect.stringMatching(timeRegex)
-    )
-    expect(debugMock).toHaveBeenNthCalledWith(
-      3,
-      expect.stringMatching(timeRegex)
-    )
-    expect(setOutputMock).toHaveBeenNthCalledWith(
       1,
-      'time',
-      expect.stringMatching(timeRegex)
+      'Calling with T:nema, W:default, P:tutorial for file app.py and global ID 2 ...'
     )
     expect(errorMock).not.toHaveBeenCalled()
   })
@@ -69,8 +63,12 @@ describe('action', () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation(name => {
       switch (name) {
-        case 'milliseconds':
-          return 'this is not a number'
+        case 'file':
+          return 'app.py'
+        case 'project':
+          return 'nema/default/tutorial'
+        case 'id':
+          return 'bla'
         default:
           return ''
       }
@@ -80,10 +78,7 @@ describe('action', () => {
     expect(runMock).toHaveReturned()
 
     // Verify that all of the core library functions were called correctly
-    expect(setFailedMock).toHaveBeenNthCalledWith(
-      1,
-      'milliseconds not a number'
-    )
+    expect(setFailedMock).toHaveBeenNthCalledWith(1, 'Invalid global ID: bla')
     expect(errorMock).not.toHaveBeenCalled()
   })
 })

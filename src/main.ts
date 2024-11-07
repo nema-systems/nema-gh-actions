@@ -10,9 +10,21 @@ export async function run(): Promise<void> {
   try {
     const filePath = core.getInput('file', { required: true })
     const projectUrl = core.getInput('project', { required: true })
-    const globalId = core.getInput('id', { required: true })
+    const globalIdStr = core.getInput('id', { required: true })
 
     const [tenant, workspace, project] = projectUrl.split('/')
+
+    core.debug(
+      `Calling with T:${tenant}, W:${workspace}, P:${project} for file ${filePath} and global ID ${globalIdStr} ...`
+    )
+
+    // Check if globalId is a positive integer
+    if (!/^\d+$/.test(globalIdStr)) {
+      core.setFailed(`Invalid global ID: ${globalIdStr}`)
+      return
+    }
+
+    const globalId = parseInt(globalIdStr, 10)
 
     // Check if the file exists
     if (!fs.existsSync(filePath)) {

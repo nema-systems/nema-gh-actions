@@ -25657,52 +25657,45 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(7484));
-const wait_1 = __nccwpck_require__(910);
+const fs = __importStar(__nccwpck_require__(9896));
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
     try {
-        const ms = core.getInput('milliseconds');
-        // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
-        core.debug(`Waiting ${ms} milliseconds ...`);
-        // Log the current timestamp, wait, then log the new timestamp
-        core.debug(new Date().toTimeString());
-        await (0, wait_1.wait)(parseInt(ms, 10));
-        core.debug(new Date().toTimeString());
-        // Set outputs for other workflow steps to use
-        core.setOutput('time', new Date().toTimeString());
+        const filePath = core.getInput('file', { required: true });
+        const projectUrl = core.getInput('project', { required: true });
+        const globalIdStr = core.getInput('id', { required: true });
+        const [tenant, workspace, project] = projectUrl.split('/');
+        core.debug(`Calling with T:${tenant}, W:${workspace}, P:${project} for file ${filePath} and global ID ${globalIdStr} ...`);
+        // Check if globalId is a positive integer
+        if (!/^\d+$/.test(globalIdStr)) {
+            core.setFailed(`Invalid global ID: ${globalIdStr}`);
+            return;
+        }
+        const globalId = parseInt(globalIdStr, 10);
+        // Check if the file exists
+        if (!fs.existsSync(filePath)) {
+            core.setFailed(`File not found: ${filePath}`);
+            return;
+        }
+        const idToken = await core.getIDToken();
+        // submit file to nemasystems
+        const response = await fetch(`https://api.nemasystems.com/api/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`, {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${idToken}`
+            }
+        });
+        console.log({ response });
+        console.log({ filePath, projectUrl, globalId, idToken });
     }
     catch (error) {
         // Fail the workflow run if an error occurs
         if (error instanceof Error)
             core.setFailed(error.message);
     }
-}
-
-
-/***/ }),
-
-/***/ 910:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.wait = wait;
-/**
- * Wait for a number of milliseconds.
- * @param milliseconds The number of milliseconds to wait.
- * @returns {Promise<string>} Resolves with 'done!' after the wait is over.
- */
-async function wait(milliseconds) {
-    return new Promise(resolve => {
-        if (isNaN(milliseconds)) {
-            throw new Error('milliseconds not a number');
-        }
-        setTimeout(() => resolve('done!'), milliseconds);
-    });
 }
 
 
