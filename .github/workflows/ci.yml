@@ -57,7 +57,9 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          file: 'app.py'
+          project: 'myorganization/default/myproject'
+          id: '4'
 
       - name: Print Output
         id: output
