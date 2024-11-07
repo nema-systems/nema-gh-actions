@@ -25658,6 +25658,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 const core = __importStar(__nccwpck_require__(7484));
 const fs = __importStar(__nccwpck_require__(9896));
+// import { wait } from './wait'
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
