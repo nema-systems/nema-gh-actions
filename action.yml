@@ -1,0 +1,16 @@
+name: 'nema-push'
+description: 'These actions allow for pushing to the Nema platform.'
+author: 'Nema Systems, Inc.'
+
+# This is what appears on GitHub Marketplace.
+branding:
+  icon: 'send'
+  color: 'blue'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Instructions'
+      run: |
+        echo "This repository contains multiple GitHub Actions."
+        echo "Check the README for details on how to use each action."

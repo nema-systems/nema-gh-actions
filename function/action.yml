@@ -1,15 +1,7 @@
-name: 'nema-function-update-action'
-description:
-  'This action updates function code in Nema, such as Python, Julia, R, ...
-  code.'
+name: 'function'
+description: 'Push a code function to the Nema platform.'
 author: 'Nema Systems, Inc.'
 
-# This is what appears on GitHub Marketplace.
-branding:
-  icon: 'send'
-  color: 'blue'
-
-# Define your inputs here.
 inputs:
   file:
     description: 'The file that contains the function code.'
