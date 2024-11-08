@@ -29139,7 +29139,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 1730:
+/***/ 7045:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -35945,9 +35945,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /**
  * The entrypoint for the action.
  */
-const main_1 = __nccwpck_require__(1730);
+const function_main_1 = __nccwpck_require__(7045);
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-(0, main_1.run)();
+(0, function_main_1.run)();
 
 })();
 
