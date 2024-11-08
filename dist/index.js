@@ -29139,7 +29139,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 7045:
+/***/ 1730:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -29176,45 +29176,54 @@ const core = __importStar(__nccwpck_require__(7484));
 const fs = __importStar(__nccwpck_require__(9896));
 const form_data_1 = __importDefault(__nccwpck_require__(6454));
 const axios_1 = __importDefault(__nccwpck_require__(7269));
-// import { wait } from './wait'
+const pushFunction = async () => {
+    const filePath = core.getInput('file', { required: true });
+    const projectUrl = core.getInput('project', { required: true });
+    const globalIdStr = core.getInput('id', { required: true });
+    const [tenant, workspace, project] = projectUrl.split('/');
+    core.debug(`Calling with T:${tenant}, W:${workspace}, P:${project} for file ${filePath} and global ID ${globalIdStr} ...`);
+    // Check if globalId is a positive integer
+    if (!/^\d+$/.test(globalIdStr)) {
+        core.setFailed(`Invalid global ID: ${globalIdStr}`);
+        return;
+    }
+    const globalId = parseInt(globalIdStr, 10);
+    // Check if the file exists
+    if (!fs.existsSync(filePath)) {
+        core.setFailed(`File not found: ${filePath}`);
+        return;
+    }
+    const idToken = await core.getIDToken();
+    core.info(`Uploading ${filePath} to Function #${globalId} for ${projectUrl}`);
+    const url = `https://api.nemasystems.io/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`;
+    const formData = new form_data_1.default();
+    const fileContent = fs.createReadStream(filePath);
+    formData.append('file', fileContent, { filename: filePath });
+    const headers = {
+        ...formData.getHeaders(),
+        Authorization: `Bearer ${idToken}`
+    };
+    // submit file to nemasystems
+    const response = await axios_1.default.put(url, formData, { headers });
+    if (response.status < 200 || response.status >= 300) {
+        throw new Error(`Server responded with status code ${response.status}: ${response.statusText}`);
+    }
+    core.info(`Response: ${response.status}`);
+    return;
+};
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
+    const actionType = process.env.ACTION_ARTIFACT_PUSH_TYPE || 'function';
     try {
-        const filePath = core.getInput('file', { required: true });
-        const projectUrl = core.getInput('project', { required: true });
-        const globalIdStr = core.getInput('id', { required: true });
-        const [tenant, workspace, project] = projectUrl.split('/');
-        core.debug(`Calling with T:${tenant}, W:${workspace}, P:${project} for file ${filePath} and global ID ${globalIdStr} ...`);
-        // Check if globalId is a positive integer
-        if (!/^\d+$/.test(globalIdStr)) {
-            core.setFailed(`Invalid global ID: ${globalIdStr}`);
-            return;
+        if (actionType === 'function') {
+            await pushFunction();
         }
-        const globalId = parseInt(globalIdStr, 10);
-        // Check if the file exists
-        if (!fs.existsSync(filePath)) {
-            core.setFailed(`File not found: ${filePath}`);
-            return;
+        else {
+            core.setFailed(`Invalid action type: ${actionType}`);
         }
-        const idToken = await core.getIDToken();
-        core.info(`Uploading ${filePath} to Function #${globalId} for ${projectUrl}`);
-        const url = `https://api.nemasystems.io/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`;
-        const formData = new form_data_1.default();
-        const fileContent = fs.createReadStream(filePath);
-        formData.append('file', fileContent, { filename: filePath });
-        const headers = {
-            ...formData.getHeaders(),
-            Authorization: `Bearer ${idToken}`
-        };
-        // submit file to nemasystems
-        const response = await axios_1.default.put(url, formData, { headers });
-        if (response.status < 200 || response.status >= 300) {
-            throw new Error(`Server responded with status code ${response.status}: ${response.statusText}`);
-        }
-        core.info(`Response: ${response.status}`);
     }
     catch (error) {
         // Fail the workflow run if an error occurs
@@ -35945,9 +35954,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 /**
  * The entrypoint for the action.
  */
-const function_main_1 = __nccwpck_require__(7045);
+const main_1 = __nccwpck_require__(1730);
 // eslint-disable-next-line @typescript-eslint/no-floating-promises
-(0, function_main_1.run)();
+(0, main_1.run)();
 
 })();
 
