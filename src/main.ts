@@ -38,7 +38,12 @@ const pushFunction = async (): Promise<undefined> => {
 
   const fileContent = fs.createReadStream(filePath)
 
+  const functionProperties = {
+    version_id: process.env.GITHUB_SHA || ''
+  }
+
   formData.append('file', fileContent, { filename: filePath })
+  formData.append('app_properties', JSON.stringify(functionProperties))
 
   const headers = {
     ...formData.getHeaders(),

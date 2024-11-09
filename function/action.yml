@@ -16,6 +16,17 @@ inputs:
     description: 'ID of function you are updating.'
     required: true
 
+  functionType:
+    description: 'Type of function you are updating.'
+    required: false
+    default: ''
+
+  details:
+    description:
+      'Details of what you want to update (JSON dictionary as string).'
+    required: false
+    default: '{}'
+
 runs:
   using: node20
   main: ../dist/index.js
