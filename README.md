@@ -1,4 +1,4 @@
-# Github Actions for Interacting with Nema
+# GitHub Actions for Interacting with Nema
 
 ## Usage
 
