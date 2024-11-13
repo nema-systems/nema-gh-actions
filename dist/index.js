@@ -29220,9 +29220,9 @@ const pushFunction = async () => {
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
-    const actionType = process.env.ACTION_ARTIFACT_PUSH_TYPE || 'function';
+    const actionType = process.env.ACTION_ARTIFACT_TYPE || 'push-function';
     try {
-        if (actionType === 'function') {
+        if (actionType === 'push-function') {
             await pushFunction();
         }
         else {

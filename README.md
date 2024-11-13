@@ -1,4 +1,4 @@
-# Action for Pushing to Nema
+# Github Actions for Interacting with Nema
 
 ## Usage
 
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Push To Nema
-        uses: nema-systems/nema-push/function@v1
+        uses: nema-systems/nema-gh-actions/push-function@v1
         with:
           file: 'src/app.py'
           project: 'nema/default/tutorial'

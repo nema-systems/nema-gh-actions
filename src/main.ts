@@ -69,10 +69,10 @@ const pushFunction = async (): Promise<undefined> => {
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 export async function run(): Promise<void> {
-  const actionType = process.env.ACTION_ARTIFACT_PUSH_TYPE || 'function'
+  const actionType = process.env.ACTION_ARTIFACT_TYPE || 'push-function'
 
   try {
-    if (actionType === 'function') {
+    if (actionType === 'push-function') {
       await pushFunction()
     } else {
       core.setFailed(`Invalid action type: ${actionType}`)

@@ -1,10 +1,10 @@
-name: 'nema-push'
-description: 'These actions allow for pushing to the Nema platform.'
+name: 'nema-gh-actions'
+description: 'These actions allow for interacting with the Nema platform.'
 author: 'Nema Systems, Inc.'
 
 # This is what appears on GitHub Marketplace.
 branding:
-  icon: 'send'
+  icon: 'check-circle'
   color: 'blue'
 
 runs:

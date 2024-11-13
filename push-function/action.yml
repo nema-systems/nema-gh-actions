@@ -1,4 +1,4 @@
-name: 'function'
+name: 'push-function'
 description: 'Push a code function to the Nema platform.'
 author: 'Nema Systems, Inc.'
 
@@ -31,4 +31,4 @@ runs:
   using: node20
   main: ../dist/index.js
 env:
-  ACTION_ARTIFACT_PUSH_TYPE: 'function'
+  ACTION_ARTIFACT_TYPE: 'function-push'
