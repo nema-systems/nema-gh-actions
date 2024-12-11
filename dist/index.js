@@ -29195,14 +29195,14 @@ const pushFunction = async () => {
     }
     const idToken = await core.getIDToken();
     core.info(`Uploading ${filePath} to Function #${globalId} for ${projectUrl}`);
-    const url = `https://api.nemasystems.io/app/${tenant}/${workspace}/${project}/artifacts/apps/${globalId}`;
+    const url = `https://api.nemasystems.io/app/${tenant}/${workspace}/${project}/artifacts/functions/${globalId}`;
     const formData = new form_data_1.default();
     const fileContent = fs.createReadStream(filePath);
     const functionProperties = {
         version_id: process.env.GITHUB_SHA || ''
     };
     formData.append('file', fileContent, { filename: filePath });
-    formData.append('app_properties', JSON.stringify(functionProperties));
+    formData.append('function_properties', JSON.stringify(functionProperties));
     const headers = {
         ...formData.getHeaders(),
         Authorization: `Bearer ${idToken}`
