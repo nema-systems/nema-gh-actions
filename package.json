@@ -1,7 +1,7 @@
 {
   "name": "nema-gh-actions",
   "description": "This action allows you to interact with Nema in your GitHub Actions workflow.",
-  "version": "v1.0.14",
+  "version": "v1.0.15",
   "author": "Nema Systems, Inc.",
   "private": true,
   "homepage": "https://github.com/nema-systems/nema-function-update-action",
